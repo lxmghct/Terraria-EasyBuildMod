@@ -14,19 +14,7 @@ namespace EasyBuildMod.Content.Items
         public override string Texture => "EasyBuildMod/Content/Items/ItemGrabMagnet";
 
         private Player currentPlayer;
-        private bool _isMagnetOn;
-        public bool IsMagnetOn
-        {
-            get => _isMagnetOn;
-            set
-            {
-                if (_isMagnetOn != value)
-                {
-                    _isMagnetOn = value;
-                    HandleMagnetStatusChange();
-                }
-            }
-        }
+        private bool IsMagnetOn;
 
         public override void SetStaticDefaults()
         {
@@ -60,7 +48,8 @@ namespace EasyBuildMod.Content.Items
         public override bool? UseItem(Player player)
         {
             currentPlayer = player;
-            IsMagnetOn = !IsMagnetOn;
+            IsMagnetOn = !currentPlayer.HasBuff(ModContent.BuffType<Buffs.ItemGrabBuff>());
+            HandleMagnetStatusChange();
             return true;
         }
 
