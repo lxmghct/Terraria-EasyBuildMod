@@ -1,5 +1,4 @@
 
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace EasyBuildMod.Content.Items
