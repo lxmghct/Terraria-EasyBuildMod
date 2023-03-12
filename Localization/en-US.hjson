@@ -1,0 +1,35 @@
+# en-US.hjson
+
+Mods: {
+    EasyBuildMod: {
+        Content: {
+            Items: {
+                ItemGrabMagnet: {
+                    Name: Item-Grab Magnet
+                    Description: Largely increases the range of item-grab.
+                    Usage: Left-click to toggle on/off.
+                    StatusName: Magnet Status
+                    OnTooltip: Magnet is on
+                    OffTooltip: Magnet is off
+                }
+            }
+            # end Items
+
+            Buffs: {
+                ItemGrabBuff: {
+                    Name: Item Grab
+                    Description: Increases the range of item-grab.
+                }
+            }
+            # end Buffs
+        }
+        # end Content
+
+        Config: {
+
+        }
+        # end Config
+    }
+    # end EasyBuildMod
+}
+# end Mods

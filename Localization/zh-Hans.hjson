@@ -1,0 +1,35 @@
+# zh-Hans.hjson
+
+Mods: {
+    EasyBuildMod: {
+        Content: {
+            Items: {
+                ItemGrabMagnet: {
+                    Name: 物品拾取磁铁
+                    Description: 大大增加物品拾取范围，使你能够轻松拾取远处的物品。
+                    Usage: 左键开启/关闭物品拾取磁铁。
+                    StatusName: 磁铁状态
+                    OnTooltip: 磁铁已开启
+                    OffTooltip: 磁铁已禁用
+                }
+            }
+            # end Items
+
+            Buffs: {
+                ItemGrabBuff: {
+                    Name: 物品拾取
+                    Description: 物品拾取范围增加。
+                }
+            }
+            # end Buffs
+        }
+        # end Content
+
+        Config: {
+
+        }
+        # end Config
+    }
+    # end EasyBuildMod
+}
+# end Mods
