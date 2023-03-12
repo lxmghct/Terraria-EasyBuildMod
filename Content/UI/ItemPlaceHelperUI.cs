@@ -10,20 +10,20 @@ namespace EasyBuildMod.Content.UI
 
         public ItemSelectButton itemSelectButton;
 
-        public UIElement MainPanel;
+        public UIElement MainContainer;
 
         public bool Visible;
 
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Append(MainPanel = new ());
-            MainPanel.Width.Set(200, 0);
-            MainPanel.Height.Set(200, 0);
+            Append(MainContainer = new ());
+            MainContainer.Width.Set(200, 0);
+            MainContainer.Height.Set(200, 0);
             itemSelectButton = new ItemSelectButton();
             itemSelectButton.Left.Set(0, 0);
             itemSelectButton.Top.Set(0, 0);
-            MainPanel.Append(itemSelectButton);
+            MainContainer.Append(itemSelectButton);
         }
 
         public override void Update(GameTime gameTime)
@@ -34,16 +34,16 @@ namespace EasyBuildMod.Content.UI
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
-            itemSelectButton.Draw(spriteBatch);
         }
 
         public void Open(ItemPlaceHelper itemPlaceHelper)
         {
             this.itemPlaceHelper = itemPlaceHelper;
             Visible = true;
-            Left.Set(Main.MouseScreen.X - Width.Pixels / 2, 0);
-            Top.Set(Main.MouseScreen.Y - Height.Pixels / 2, 0);
-            Main.LocalPlayer.mouseInterface = true;
+            // 注意要除以UIScale，否则如果缩放比例不是100%就会错位
+            MainContainer.Left.Set(Main.mouseX / Main.UIScale - MainContainer.Width.Pixels / 2, 0);
+            MainContainer.Top.Set(Main.mouseY / Main.UIScale - MainContainer.Height.Pixels / 2, 0);
+            
         }
 
         public void Close()

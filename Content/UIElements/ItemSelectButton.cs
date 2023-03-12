@@ -12,8 +12,8 @@ namespace EasyBuildMod.Content.UIElements
         {
             Background = ModContent.Request<Texture2D>("EasyBuildMod/Content/UIElements/ItemSelectButton");
             Content = null;
-            Width.Set(60, 0);
-            Height.Set(60, 0);
+            Width.Set(50, 0);
+            Height.Set(50, 0);
         }
 
         public void SetContent(Asset<Texture2D> image)
@@ -29,6 +29,11 @@ namespace EasyBuildMod.Content.UIElements
             {
                 spriteBatch.Draw(Content.Value, GetDimensions().ToRectangle(), Color.White);
             }
+        }
+
+        public override void Click(UIMouseEvent evt)
+        {
+            base.Click(evt);
         }
 
 
