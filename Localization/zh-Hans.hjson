@@ -2,6 +2,7 @@
 
 Mods: {
     EasyBuildMod: {
+        ModName: 便捷建造
         Content: {
             Items: {
                 ItemGrabMagnet: {
@@ -26,6 +27,8 @@ Mods: {
         # end Content
 
         Config: {
+            Label: 模组配置
+            MagnetRange: 物品拾取磁铁范围
 
         }
         # end Config

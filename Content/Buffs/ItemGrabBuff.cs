@@ -1,4 +1,5 @@
 using EasyBuildMod.Common.Players;
+
 namespace EasyBuildMod.Content.Buffs
 {
     public class ItemGrabBuff : ModBuff

@@ -1,3 +1,4 @@
+using EasyBuildMod.Common.Config;
 
 namespace EasyBuildMod.Common.Players
 {
@@ -23,7 +24,7 @@ namespace EasyBuildMod.Common.Players
         {
             if (player.GetModPlayer<EasyBuildModPlayer>().ItemGrabBuff)
             {
-                grabRange *= 10;
+                grabRange = ModContent.GetInstance<EasyBuildModConfig>().MagnetRange * 16;
             }
         }
     }

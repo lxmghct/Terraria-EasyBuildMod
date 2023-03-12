@@ -2,6 +2,7 @@
 
 Mods: {
     EasyBuildMod: {
+        ModName: Easy Build
         Content: {
             Items: {
                 ItemGrabMagnet: {
@@ -26,6 +27,8 @@ Mods: {
         # end Content
 
         Config: {
+            Label: Mod Config
+            MagnetRange: Item-Grab Magnet Range
 
         }
         # end Config
