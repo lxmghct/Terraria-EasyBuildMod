@@ -10,5 +10,8 @@ namespace EasyBuildMod
 {
 	public class EasyBuildMod : Mod
 	{
+		public EasyBuildMod()
+		{
+		}
 	}
 }

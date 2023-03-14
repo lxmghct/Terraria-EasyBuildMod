@@ -26,6 +26,11 @@ namespace EasyBuildMod.Content.UI
             MainContainer.Append(itemSelectButton);
         }
 
+        public void Init()
+        {
+            Visible = false;
+            itemSelectButton.SetContent(null);
+        }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -39,11 +44,11 @@ namespace EasyBuildMod.Content.UI
         public void Open(ItemPlaceHelper itemPlaceHelper)
         {
             this.itemPlaceHelper = itemPlaceHelper;
+            itemSelectButton.SetItemPlaceHelper(itemPlaceHelper);
             Visible = true;
             // 注意要除以UIScale，否则如果缩放比例不是100%就会错位
             MainContainer.Left.Set(Main.mouseX / Main.UIScale - MainContainer.Width.Pixels / 2, 0);
             MainContainer.Top.Set(Main.mouseY / Main.UIScale - MainContainer.Height.Pixels / 2, 0);
-            
         }
 
         public void Close()

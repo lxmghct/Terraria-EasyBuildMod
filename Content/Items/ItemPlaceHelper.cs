@@ -5,6 +5,17 @@ namespace EasyBuildMod.Content.Items
     public class ItemPlaceHelper : ModItem
     {
 
+        private Item _placeItem;
+        public Item PlaceItem
+        {
+            get => _placeItem;
+            set
+            {
+                _placeItem = value;
+                updateSelectedItem();
+            }
+        }
+
         internal static string GetText(string str, params object[] args)
         {
             return Language.GetTextValue($"Mods.EasyBuildMod.Content.Items.ItemPlaceHelper.{str}", args);
@@ -29,6 +40,22 @@ namespace EasyBuildMod.Content.Items
             Item.useTime = 20;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.consumable = false;
+            PlaceItem = null;
+            UISystem.ItemPlaceHelperUI.Init();
+        }
+
+        ///<summary>将角标的剩余物品数更新为PlaceItem的</summary>
+        internal void updateSelectedItem()
+        {
+            if (PlaceItem != null)
+            {
+                
+            }
+            else
+            {
+                
+            }
+            
         }
 
         public override void AddRecipes()
