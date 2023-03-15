@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using Terraria.GameContent.Creative;
 
 namespace EasyBuildMod.Content.Items
 {
@@ -19,6 +20,7 @@ namespace EasyBuildMod.Content.Items
         {
             DisplayName.SetDefault(GetText("Name"));
             Tooltip.SetDefault(GetText("Description") + $"\n{GetText("Usage")}");
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
         public override void SetDefaults()

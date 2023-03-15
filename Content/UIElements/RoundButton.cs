@@ -16,8 +16,8 @@ namespace EasyBuildMod.Content.UIElements
         {
             if (_backgroundNormal == null || _backgroundHighlight == null)
             {
-                _backgroundNormal = ModContent.Request<Texture2D>("EasyBuildMod/Content/UIElements/ItemSelectButton");
-                _backgroundHighlight = ModContent.Request<Texture2D>("EasyBuildMod/Content/UIElements/ItemSelectButtonHighlight");
+                _backgroundNormal = ModContent.Request<Texture2D>("EasyBuildMod/Content/UIElements/RoundButton");
+                _backgroundHighlight = ModContent.Request<Texture2D>("EasyBuildMod/Content/UIElements/RoundButtonHighlight");
             }
             Content = null;
             Background = _backgroundNormal;

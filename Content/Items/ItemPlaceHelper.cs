@@ -1,20 +1,26 @@
-using EasyBuildMod.Common;
+using EasyBuildMod.Common.Systems;
+using Terraria.GameContent.Creative;
+using System;
+
 
 namespace EasyBuildMod.Content.Items
 {
     public class ItemPlaceHelper : ModItem
     {
 
-        private Item _placeItem;
-        public Item PlaceItem
+        private int _placeItemType;
+        public int PlaceItemType
         {
-            get => _placeItem;
+            get => _placeItemType;
             set
             {
-                _placeItem = value;
-                updateSelectedItem();
+                _placeItemType = value;
             }
         }
+
+        public Point _beginPoint;
+        public Point _endPoint;
+        public bool _startPlacing;
 
         internal static string GetText(string str, params object[] args)
         {
@@ -27,6 +33,8 @@ namespace EasyBuildMod.Content.Items
         {
             DisplayName.SetDefault(GetText("Name"));
             Tooltip.SetDefault(GetText("Description") + $"\n{GetText("Usage")}");
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+            Item.staff[Type] = true;
         }
 
         public override void SetDefaults()
@@ -39,23 +47,12 @@ namespace EasyBuildMod.Content.Items
             Item.useAnimation = 15;
             Item.useTime = 20;
             Item.useStyle = ItemUseStyleID.HoldUp;
+            Item.autoReuse = true;
+            Item.channel = true;
             Item.consumable = false;
-            PlaceItem = null;
+            PlaceItemType = 0;
+            _startPlacing = false;
             UISystem.ItemPlaceHelperUI.Init();
-        }
-
-        ///<summary>将角标的剩余物品数更新为PlaceItem的</summary>
-        internal void updateSelectedItem()
-        {
-            if (PlaceItem != null)
-            {
-                
-            }
-            else
-            {
-                
-            }
-            
         }
 
         public override void AddRecipes()
@@ -69,11 +66,14 @@ namespace EasyBuildMod.Content.Items
 
         public override bool AltFunctionUse(Player player) => true;
 
-        public override bool? UseItem(Player player)
+        public override bool CanUseItem(Player player)
         {
+            if (player.noBuilding)
+            {
+                return false;
+            }
             if (player.altFunctionUse == 2)
             {
-                // 右键
                 if (UISystem.ItemPlaceHelperUI.Visible)
                 {
                     UISystem.ItemPlaceHelperUI.Close();
@@ -82,8 +82,160 @@ namespace EasyBuildMod.Content.Items
                 {
                     UISystem.ItemPlaceHelperUI.Open(this);
                 }
+                return false;
+            }
+            if (GetItemCountOfInventory(player.inventory, PlaceItemType) == 0)
+            {
+                return false;
+            }
+            if (!_startPlacing)
+            {
+                _beginPoint = Main.MouseWorld.ToTileCoordinates();
+                _startPlacing = true;
             }
             return true;
+        }
+        
+        public override bool? UseItem(Player player)
+        {
+            _endPoint = Main.MouseWorld.ToTileCoordinates();
+            if (!Main.mouseLeft)
+            {
+                // 鼠标左键松开
+                StartPlaceItem(player);
+                _startPlacing = false;
+                return true;
+            }
+            if (Main.mouseRight && _startPlacing)
+            {
+                // 鼠标右键按下
+                _startPlacing = false;
+            }
+            else
+            {
+                DrawRectangle(player);
+            }
+            // 绘制矩形
+            return base.UseItem(player);
+        }
+
+        public int GetItemCountOfInventory(Item[] inventory, int type)
+        {
+            int count = 0;
+            for (int i = 0; i < inventory.Length; i++)
+            {
+                if (inventory[i].type == type)
+                {
+                    count += inventory[i].stack;
+                }
+            }
+            return count;
+        }
+
+        private Rectangle GetRectangle(Point begin, Point end)
+        {
+            var beginVector = begin.ToVector2();
+            var endVector = end.ToVector2();
+            int startX = Math.Min((int)beginVector.X, (int)endVector.X);
+            int startY = Math.Min((int)beginVector.Y, (int)endVector.Y);
+            int endX = Math.Max((int)beginVector.X, (int)endVector.X);
+            int endY = Math.Max((int)beginVector.Y, (int)endVector.Y);
+            Main.NewText($"矩形：{startX},{startY},{endX},{endY}");
+            return new Rectangle(startX, startY, endX - startX, endY - startY);
+        }
+
+        private void StartPlaceItem(Player player)
+        {
+            if (!_startPlacing)
+            {
+                return;
+            }
+            Main.NewText($"开始放置");
+            var rect = GetRectangle(_beginPoint, _endPoint);
+            int consumeCount = 0;
+            int total = GetItemCountOfInventory(player.inventory, PlaceItemType);
+            Item item = new Item();
+            item.SetDefaults(PlaceItemType);
+            // 从下到上，从左到右
+            for (int y = rect.Y + rect.Height; y >= rect.Y; y--)
+            {
+                for (int x = rect.X; x <= rect.X + rect.Width; x++)
+                {
+                    Main.NewText($"放置{x},{y}");
+                    if (consumeCount >= total)
+                    {
+                        break;
+                    }
+                    if (Main.tile[x, y].HasTile)
+                    {
+                        if (!player.TileReplacementEnabled)
+                        {
+                            continue;
+                        }
+                        var tile = Main.tile[x, y];
+                        if (tile.TileType == PlaceItemType)
+                        {
+                            continue;
+                        }
+                        if (!player.HasEnoughPickPowerToHurtTile(x, y))
+                        {
+                            continue;
+                        }
+                        if (WorldGen.ReplaceTile(x, y, (ushort)item.createTile, item.placeStyle))
+                        {
+                            consumeCount++;
+                        }
+                        else
+                        {
+                            player.PickTile(x, y, 10000);
+                            if (!Main.tile[x, y].HasTile && WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
+                            {
+                                consumeCount++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
+                        {
+                            consumeCount++;
+                        }
+                    }
+                }
+            }
+            if (consumeCount > 0)
+            {
+                for (int i = 0; i < player.inventory.Length; i++)
+                {
+                    if (player.inventory[i].type == PlaceItemType)
+                    {
+                        if (player.inventory[i].stack > consumeCount)
+                        {
+                            player.inventory[i].stack -= consumeCount;
+                            break;
+                        }
+                        else
+                        {
+                            consumeCount -= player.inventory[i].stack;
+                            player.inventory[i].SetDefaults();
+                        }
+                    }
+                }
+            }
+        }
+
+        private void DrawRectangle(Player player)
+        {
+            if (!Main.dedServ && Main.myPlayer == player.whoAmI)
+            {
+                // 绘制矩形
+                var begin = _beginPoint.ToVector2() * 16;
+                var end = _endPoint.ToVector2() * 16;
+                var width = end.X - begin.X;
+                var height = end.Y - begin.Y;
+                var rect = new Rectangle((int)begin.X, (int)begin.Y, (int)width, (int)height);
+                // DrawRectangle(rect, Color.White);
+            }
         }
                 
     }
