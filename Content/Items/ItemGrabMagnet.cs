@@ -14,7 +14,7 @@ namespace EasyBuildMod.Content.Items
         public override string Texture => "EasyBuildMod/Content/Items/ItemGrabMagnet";
 
         private Player currentPlayer;
-        private bool IsMagnetOn;
+        public bool IsMagnetOn;
 
         public override void SetStaticDefaults()
         {

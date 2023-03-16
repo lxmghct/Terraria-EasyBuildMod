@@ -49,5 +49,10 @@ namespace EasyBuildMod.Common.Systems
                 );
             }
         }
+
+        public static void Hide()
+        {
+            ItemPlaceHelperUI?.Hide();
+        }
     }
 }

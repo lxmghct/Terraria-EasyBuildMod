@@ -71,7 +71,6 @@ namespace EasyBuildMod.Content.UI
         public void Open(ItemPlaceHelper itemPlaceHelper)
         {
             this.itemPlaceHelper = itemPlaceHelper;
-            itemSelectButton.SetContent(null);
             Visible = true;
             // 注意要除以UIScale，否则如果缩放比例不是100%就会错位
             MainContainer.Left.Set(Main.mouseX / Main.UIScale - MainContainer.Width.Pixels / 2, 0);
@@ -81,6 +80,12 @@ namespace EasyBuildMod.Content.UI
         public void Close()
         {
             Visible = false;
+        }
+
+        public void Hide()
+        {
+            Visible = false;
+            itemPlaceHelper?.StopUse();
         }
 
     }

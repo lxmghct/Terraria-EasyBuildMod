@@ -103,20 +103,32 @@ namespace EasyBuildMod.Content.Items
             {
                 // 鼠标左键松开
                 StartPlaceItem(player);
+                stopDraw(player);
                 _startPlacing = false;
                 return true;
             }
             if (Main.mouseRight && _startPlacing)
             {
                 // 鼠标右键按下
+                stopDraw(player);
                 _startPlacing = false;
             }
             else
             {
-                DrawRectangle(player);
+                DrawingSystem.StartDraw(PlaceItemType, GetRectangle(_beginPoint, _endPoint));
             }
             // 绘制矩形
             return base.UseItem(player);
+        }
+
+        private void stopDraw(Player player)
+        {
+            DrawingSystem.StopDraw();
+        }
+
+        public void StopUse()
+        {
+            _startPlacing = false;
         }
 
         public int GetItemCountOfInventory(Item[] inventory, int type)
@@ -140,7 +152,6 @@ namespace EasyBuildMod.Content.Items
             int startY = Math.Min((int)beginVector.Y, (int)endVector.Y);
             int endX = Math.Max((int)beginVector.X, (int)endVector.X);
             int endY = Math.Max((int)beginVector.Y, (int)endVector.Y);
-            Main.NewText($"矩形：{startX},{startY},{endX},{endY}");
             return new Rectangle(startX, startY, endX - startX, endY - startY);
         }
 
@@ -150,7 +161,6 @@ namespace EasyBuildMod.Content.Items
             {
                 return;
             }
-            Main.NewText($"开始放置");
             var rect = GetRectangle(_beginPoint, _endPoint);
             int consumeCount = 0;
             int total = GetItemCountOfInventory(player.inventory, PlaceItemType);
@@ -161,7 +171,6 @@ namespace EasyBuildMod.Content.Items
             {
                 for (int x = rect.X; x <= rect.X + rect.Width; x++)
                 {
-                    Main.NewText($"放置{x},{y}");
                     if (consumeCount >= total)
                     {
                         break;
@@ -173,10 +182,7 @@ namespace EasyBuildMod.Content.Items
                             continue;
                         }
                         var tile = Main.tile[x, y];
-                        if (tile.TileType == PlaceItemType)
-                        {
-                            continue;
-                        }
+                        Main.NewText($"{tile.GetType()} , {PlaceItemType}");
                         if (!player.HasEnoughPickPowerToHurtTile(x, y))
                         {
                             continue;
@@ -185,14 +191,14 @@ namespace EasyBuildMod.Content.Items
                         {
                             consumeCount++;
                         }
-                        else
-                        {
-                            player.PickTile(x, y, 10000);
-                            if (!Main.tile[x, y].HasTile && WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
-                            {
-                                consumeCount++;
-                            }
-                        }
+                        // else // 无法替换，强行破坏后放置
+                        // {
+                        //     player.PickTile(x, y, 10000);
+                        //     if (!Main.tile[x, y].HasTile && WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
+                        //     {
+                        //         consumeCount++;
+                        //     }
+                        // }
                     }
                     else
                     {

@@ -1,4 +1,6 @@
+using EasyBuildMod.Common.Systems;
 using EasyBuildMod.Common.Config;
+using EasyBuildMod.Content.Items;
 
 namespace EasyBuildMod.Common.Players
 {
@@ -15,6 +17,35 @@ namespace EasyBuildMod.Common.Players
         {
             ItemGrabBuff = false;
         }
+
+        public override void OnRespawn(Player player)
+        {
+            UISystem.Hide();
+            DrawingSystem.StopDraw();
+        }
+
+        public override void UpdateDead()
+        {
+            UISystem.Hide();
+            DrawingSystem.StopDraw();
+        }
+
+        public override void PostUpdate()
+        {
+            Player player = Main.player[Main.myPlayer];
+            Item item = player.inventory[player.selectedItem];
+            if (item.type != ModContent.ItemType<ItemPlaceHelper>())
+            {
+                if (!Main.playerInventory)
+                {
+                    UISystem.Hide();
+                }
+                DrawingSystem.StopDraw();
+            }
+        }
+        
+
+    
 
     }
 
