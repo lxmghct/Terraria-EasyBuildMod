@@ -102,28 +102,35 @@ namespace EasyBuildMod.Content.Items
             if (!Main.mouseLeft)
             {
                 // 鼠标左键松开
-                StartPlaceItem(player);
-                stopDraw(player);
-                _startPlacing = false;
+                HandleMouseUp();
                 return true;
             }
             if (Main.mouseRight && _startPlacing)
             {
                 // 鼠标右键按下
-                stopDraw(player);
-                _startPlacing = false;
+                stopDraw();
             }
             else
             {
-                DrawingSystem.StartDraw(PlaceItemType, GetRectangle(_beginPoint, _endPoint));
+                DrawingSystem.StartDraw(GetRectangle(_beginPoint, _endPoint));
             }
             // 绘制矩形
             return base.UseItem(player);
         }
 
-        private void stopDraw(Player player)
+        private void stopDraw()
         {
             DrawingSystem.StopDraw();
+            _startPlacing = false;
+        }
+
+        public void HandleMouseUp()
+        {
+            if (_startPlacing)
+            {
+                StartPlaceItem(Main.LocalPlayer);
+                stopDraw();
+            }
         }
 
         public void StopUse()
@@ -157,19 +164,15 @@ namespace EasyBuildMod.Content.Items
 
         private void StartPlaceItem(Player player)
         {
-            if (!_startPlacing)
-            {
-                return;
-            }
             var rect = GetRectangle(_beginPoint, _endPoint);
             int consumeCount = 0;
             int total = GetItemCountOfInventory(player.inventory, PlaceItemType);
             Item item = new Item();
             item.SetDefaults(PlaceItemType);
             // 从下到上，从左到右
-            for (int y = rect.Y + rect.Height; y >= rect.Y; y--)
+            for (int y = rect.Y + rect.Height - 1; y >= rect.Y; y--)
             {
-                for (int x = rect.X; x <= rect.X + rect.Width; x++)
+                for (int x = rect.X; x < rect.X + rect.Width; x++)
                 {
                     if (consumeCount >= total)
                     {
@@ -182,7 +185,6 @@ namespace EasyBuildMod.Content.Items
                             continue;
                         }
                         var tile = Main.tile[x, y];
-                        Main.NewText($"{tile.GetType()} , {PlaceItemType}");
                         if (!player.HasEnoughPickPowerToHurtTile(x, y))
                         {
                             continue;

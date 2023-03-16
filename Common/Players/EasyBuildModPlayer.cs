@@ -32,6 +32,10 @@ namespace EasyBuildMod.Common.Players
 
         public override void PostUpdate()
         {
+            if (UISystem.ItemPlaceHelperUI.itemPlaceHelper is null)
+            {
+                return;
+            }
             Player player = Main.player[Main.myPlayer];
             Item item = player.inventory[player.selectedItem];
             if (item.type != ModContent.ItemType<ItemPlaceHelper>())
@@ -40,13 +44,23 @@ namespace EasyBuildMod.Common.Players
                 {
                     UISystem.Hide();
                 }
-                DrawingSystem.StopDraw();
+                DrawingSystem.Close();
+            }
+            else
+            {
+                DrawingSystem.Init();
+                if (!Main.mouseLeft)
+                {
+                    UISystem.ItemPlaceHelperUI.itemPlaceHelper.HandleMouseUp();
+                }
             }
         }
+
+        public override void OnEnterWorld(Player player)
+        {
+            UISystem.Init();
+        }
         
-
-    
-
     }
 
     public class EasyBuildModGlobalItem : GlobalItem

@@ -9,11 +9,17 @@ namespace EasyBuildMod.Common.Systems
         public static ItemPlaceHelperUI ItemPlaceHelperUI { get; set; }
         private static UserInterface _itemPlaceHelperInterface;
 
-        public override void Load()
+
+        public static void Init()
         {
             ItemPlaceHelperUI = new ItemPlaceHelperUI();
             _itemPlaceHelperInterface = new UserInterface();
             _itemPlaceHelperInterface.SetState(ItemPlaceHelperUI);
+        }
+
+        public override void Load()
+        {
+            Init();
         }
 
         public override void Unload()

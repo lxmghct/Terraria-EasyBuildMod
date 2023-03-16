@@ -37,18 +37,29 @@ namespace EasyBuildMod.Common.Systems
 
         public override void PostUpdateEverything()
         {
-            // UpdateBox();
         }
 
-        public static void StartDraw(int itemType, Rectangle area)
+        public static void Init()
         {
-            _selectedAreaDrawing = new SelectedAreaDrawing();
-            _selectedAreaDrawing.DrawSelectedArea(itemType, area);
+            if (_selectedAreaDrawing == null)
+            {
+                _selectedAreaDrawing = new SelectedAreaDrawing();
+            }
+        }
+
+        public static void StartDraw(Rectangle area)
+        {
+            Init();
+            _selectedAreaDrawing.DrawSelectedArea(area);
         }
 
         public static void StopDraw()
         {
-            _selectedAreaDrawing?.Stop();
+            _selectedAreaDrawing.StopDrawing();
+        }
+
+        public static void Close()
+        {
             _selectedAreaDrawing = null;
         }
 
