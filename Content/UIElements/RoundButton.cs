@@ -1,4 +1,6 @@
 using ReLogic.Content;
+using Terraria.GameContent;
+using Terraria.UI.Chat;
 namespace EasyBuildMod.Content.UIElements
 {
     public class RoundButton : UIElement
@@ -12,12 +14,19 @@ namespace EasyBuildMod.Content.UIElements
 
         private static Asset<Texture2D> _backgroundHighlight;
 
+        private static Asset<Texture2D> _backgroundChosen;
+
+        private string _hoverText;
+        private bool _isMouseOver;
+        private bool _isChosen;
+
         public RoundButton()
         {
             if (_backgroundNormal == null || _backgroundHighlight == null)
             {
                 _backgroundNormal = ModContent.Request<Texture2D>("EasyBuildMod/Content/UIElements/RoundButton");
                 _backgroundHighlight = ModContent.Request<Texture2D>("EasyBuildMod/Content/UIElements/RoundButtonHighlight");
+                _backgroundChosen = ModContent.Request<Texture2D>("EasyBuildMod/Content/UIElements/RoundButtonChosen");
             }
             Content = null;
             Background = _backgroundNormal;
@@ -30,16 +39,42 @@ namespace EasyBuildMod.Content.UIElements
             Content = image;
         }
 
+        public void SetHoverText(string text)
+        {
+            _hoverText = text;
+        }
+
+        public void SetChosen(bool chosen)
+        {
+            _isChosen = chosen;
+            if (_isChosen)
+            {
+                Background = _backgroundChosen;
+            }
+            else
+            {
+                Background = _backgroundNormal;
+            }
+        }
+
         public override void MouseOver(UIMouseEvent evt)
         {
             base.MouseOver(evt);
-            Background = _backgroundHighlight;
+            _isMouseOver = true;
+            if (!_isChosen)
+            {
+                Background = _backgroundHighlight;
+            }
         }
 
         public override void MouseOut(UIMouseEvent evt)
         {
             base.MouseOut(evt);
-            Background = _backgroundNormal;
+            _isMouseOver = false;
+            if (!_isChosen)
+            {
+                Background = _backgroundNormal;
+            }
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -51,6 +86,12 @@ namespace EasyBuildMod.Content.UIElements
                 CalculatedStyle d = GetDimensions();
                 float size = 20;
                 spriteBatch.Draw(Content.Value, new Rectangle((int) (d.X + d.Width / 2 - size / 2), (int) (d.Y + d.Height / 2 - size / 2), (int) size, (int) size), Color.White);
+            }
+            if (_isMouseOver && !string.IsNullOrEmpty(_hoverText))
+            {
+                Vector2 size = FontAssets.MouseText.Value.MeasureString(_hoverText);
+                Vector2 position = Main.MouseScreen + new Vector2(16, -size.Y - 6);
+                ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, FontAssets.MouseText.Value, _hoverText, position, Color.White, 0f, Vector2.Zero, Vector2.One);
             }
         }
 

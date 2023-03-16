@@ -20,6 +20,14 @@ Mods.EasyBuildMod: {
             Left-click to select the area, after releasing the left mouse button, the item will be placed.
             Right-click while selecting an area to cancel the placement.
             '''
+        ItemDestroyHelper:
+            '''
+            Quick destruction of blocks, regardless of building area restrictions.
+            Right-click to open the item selection menu and select whether to destroy blocks or walls.
+            Left-click to select the area, after releasing the left mouse button, the blocks in the area will be destroyed.
+            Right-click while selecting an area to cancel the destruction.
+            Whether you can destroy blocks or walls depends on the maximum pickaxe power and maximum hammer power in your inventory.
+            '''
     }
     Content: {
         Items: {
@@ -29,6 +37,12 @@ Mods.EasyBuildMod: {
                 OffTooltip: Magnet is off
             }
             ItemPlaceHelper: {
+            }
+            ItemDestroyHelper: {
+                DestroyTile: Destory Tile
+                DestroyWall: Destory Wall
+                On: On
+                Off: Off
             }
         }
 

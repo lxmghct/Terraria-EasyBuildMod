@@ -20,6 +20,14 @@ Mods.EasyBuildMod: {
             左键选择区域，松开鼠标左键后，物品将被放置。
             选择区域时按下右键可取消放置。
             '''
+        ItemDestroyHelper:
+            '''
+            快速摧毁物块，无视建筑区域限制。
+            右键打开物品选择菜单，选择要摧毁物块还是墙壁。
+            左键选择区域，松开鼠标左键后，区域内的物块将被摧毁。
+            选择区域时按下右键可取消摧毁。
+            能否摧毁物块或墙壁取决于背包内的最大镐力和最大锤力。
+            '''
     }
     Content: {
         Items: {
@@ -29,6 +37,12 @@ Mods.EasyBuildMod: {
                 OffTooltip: 磁铁已禁用
             }
             ItemPlaceHelper: {
+            }
+            ItemDestroyHelper: {
+                DestroyTile: 摧毁物块
+                DestroyWall: 摧毁墙壁
+                On: 开启
+                Off: 关闭
             }
         }
         Buffs: {
