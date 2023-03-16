@@ -1,1 +1,21 @@
-Easy Build Mod is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+Easy Build Mod is a mod that makes it easier to place or destroy blocks, thus improving the efficiency of construction.
+There are three new items:
+1. Item Pickup Magnet
+    When turned on, it can increase the range of item pickup.
+2. Block Placement Assistant
+    It can quickly fill the rectangular area with blocks.
+3. Block Destruction Assistant
+    It can quickly destroy the blocks or walls in the rectangular area.
+All three items can be crafted with 20 iron ingots or lead ingots.
+
+便捷建造模组是一个可以让你更容易放置和破坏方块，从而提高建造效率的模组。
+一共有三种新增物品：
+1. 物品拾取磁铁
+    开启后可以增大物品拾取范围。
+2. 物块放置助手
+    可以将矩形区域快速用方块填充。
+3. 物块破坏助手
+    可以快速破坏矩形区域内的方块或墙壁。
+以上三种物品都只需要20个铁锭或铅锭即可合成。
+
+Github: https://github.com/lxmghct/Terraria-EasyBuildMod
