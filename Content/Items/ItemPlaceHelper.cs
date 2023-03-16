@@ -26,6 +26,24 @@ namespace EasyBuildMod.Content.Items
             return base.CanUseItem(player);
         }
 
+        public int getMaxHammerPower(Player player)
+        {
+            int maxHammerPower = 0;
+            for (int i = 0; i < player.inventory.Length; i++)
+            {
+                Item item = player.inventory[i];
+                if (item.IsAir)
+                {
+                    continue;
+                }
+                if (item.hammer > maxHammerPower)
+                {
+                    maxHammerPower = item.hammer;
+                }
+            }
+            return maxHammerPower;
+        }
+
         protected override void StartAction(Player player)
         {
             var rect = GetRectangle(_beginPoint, _endPoint);
@@ -33,6 +51,8 @@ namespace EasyBuildMod.Content.Items
             int total = GetItemCountOfInventory(player.inventory, ContentItemType);
             Item item = new Item();
             item.SetDefaults(ContentItemType);
+            bool isWall = item.createWall > 0;
+            bool hasHammer = getMaxHammerPower(player) > 0;
             // 从下到上，从左到右
             for (int y = rect.Y + rect.Height - 1; y >= rect.Y; y--)
             {
@@ -42,35 +62,59 @@ namespace EasyBuildMod.Content.Items
                     {
                         break;
                     }
-                    if (Main.tile[x, y].HasTile)
+                    Tile tile = Main.tile[x, y];
+                    if (isWall)
                     {
-                        if (!player.TileReplacementEnabled)
+                        if (tile.WallType > 0)
                         {
-                            continue;
+                            if (!player.TileReplacementEnabled)
+                            {
+                                continue;
+                            }
+                            if (hasHammer)
+                            {
+                                WorldGen.KillWall(x, y, false);
+                                WorldGen.PlaceWall(x, y, (ushort)item.createWall, true);
+                                consumeCount++;
+                            }
                         }
-                        var tile = Main.tile[x, y];
-                        if (!player.HasEnoughPickPowerToHurtTile(x, y))
+                        else
                         {
-                            continue;
-                        }
-                        if (WorldGen.ReplaceTile(x, y, (ushort)item.createTile, item.placeStyle))
-                        {
+                            WorldGen.PlaceWall(x, y, (ushort)item.createWall, true);
                             consumeCount++;
                         }
-                        // else // 无法替换，强行破坏后放置
-                        // {
-                        //     player.PickTile(x, y, 10000);
-                        //     if (!Main.tile[x, y].HasTile && WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
-                        //     {
-                        //         consumeCount++;
-                        //     }
-                        // }
                     }
                     else
                     {
-                        if (WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
+                        if (tile.HasTile)
                         {
-                            consumeCount++;
+                            if (!player.TileReplacementEnabled)
+                            {
+                                continue;
+                            }
+                            if (!player.HasEnoughPickPowerToHurtTile(x, y))
+                            {
+                                continue;
+                            }
+                            if (WorldGen.ReplaceTile(x, y, (ushort)item.createTile, item.placeStyle))
+                            {
+                                consumeCount++;
+                            }
+                            // else // 无法替换，强行破坏后放置
+                            // {
+                            //     player.PickTile(x, y, 10000);
+                            //     if (!Main.tile[x, y].HasTile && WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
+                            //     {
+                            //         consumeCount++;
+                            //     }
+                            // }
+                        }
+                        else
+                        {
+                            if (WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
+                            {
+                                consumeCount++;
+                            }
                         }
                     }
                 }
