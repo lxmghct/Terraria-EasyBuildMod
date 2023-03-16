@@ -22,8 +22,8 @@ namespace EasyBuildMod.Content.UI
             MainContainer.Width.Set(200, 0);
             MainContainer.Height.Set(200, 0);
             itemSelectButton = new RoundButton();
-            itemSelectButton.Left.Set(0, 0);
-            itemSelectButton.Top.Set(0, 0);
+            itemSelectButton.Left.Set(50, 0);
+            itemSelectButton.Top.Set(40, 0);
             MainContainer.Append(itemSelectButton);
 
             itemSelectButton.OnClick += (evt, element) =>
@@ -57,10 +57,6 @@ namespace EasyBuildMod.Content.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            // if (Main.LocalPlayer.HeldItem != itemPlaceHelper.Item)
-            // {
-            //     Close();
-            // }
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

@@ -22,17 +22,10 @@ namespace EasyBuildMod.Content.Items
         public Point _endPoint;
         public bool _startPlacing;
 
-        internal static string GetText(string str, params object[] args)
-        {
-            return Language.GetTextValue($"Mods.EasyBuildMod.Content.Items.ItemPlaceHelper.{str}", args);
-        }
-
         public override string Texture => "EasyBuildMod/Content/Items/ItemPlaceHelper";
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault(GetText("Name"));
-            Tooltip.SetDefault(GetText("Description") + $"\n{GetText("Usage")}");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             Item.staff[Type] = true;
         }

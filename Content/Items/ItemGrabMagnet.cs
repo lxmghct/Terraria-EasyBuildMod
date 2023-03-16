@@ -18,8 +18,6 @@ namespace EasyBuildMod.Content.Items
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault(GetText("Name"));
-            Tooltip.SetDefault(GetText("Description") + $"\n{GetText("Usage")}");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 

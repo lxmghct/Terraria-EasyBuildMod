@@ -1,38 +1,50 @@
 # en-US.hjson
 
-Mods: {
-    EasyBuildMod: {
-        ModName: Easy Build
-        Content: {
-            Items: {
-                ItemGrabMagnet: {
-                    Name: Item-Grab Magnet
-                    Description: Largely increases the range of item-grab.
-                    Usage: Left-click to toggle on/off.
-                    StatusName: Magnet Status
-                    OnTooltip: Magnet is on
-                    OffTooltip: Magnet is off
-                }
-            }
-            # end Items
-
-            Buffs: {
-                ItemGrabBuff: {
-                    Name: Item Grab
-                    Description: Increases the range of item-grab.
-                }
-            }
-            # end Buffs
-        }
-        # end Content
-
-        Config: {
-            Label: Mod Config
-            MagnetRange: Item-Grab Magnet Range
-
-        }
-        # end Config
+Mods.EasyBuildMod: {
+    ModName: Easy Build
+    ItemName: {
+        ItemGrabMagnet: Item-Grab Magnet
+        ItemPlaceHelper: 物品放置助手
     }
-    # end EasyBuildMod
+    ItemTooltip: {
+        ItemGrabMagnet: 
+            '''
+            Largely increases the range of item-grab.
+            Left-click to toggle on/off.
+            '''
+        ItemPlaceHelper:
+            '''
+            Quickly place blocks regardless of building area restrictions.
+            Right-click to open the item selection menu and select the item you want to place.
+            Left-click to select the area, after releasing the left mouse button, the item will be placed.
+            Right-click while selecting an area to cancel the placement.
+            '''
+    }
+    Content: {
+        Items: {
+            ItemGrabMagnet: {
+                StatusName: Magnet Status
+                OnTooltip: Magnet is on
+                OffTooltip: Magnet is off
+            }
+            ItemPlaceHelper: {
+            }
+        }
+
+        Buffs: {
+            ItemGrabBuff: {
+                Name: Item Grab
+                Description: Increases the range of item-grab.
+            }
+        }
+    }
+    # end Content
+
+    Config: {
+        Label: Mod Config
+        MagnetRange: Item-Grab Magnet Range
+
+    }
+    # end Config
 }
-# end Mods
+# end Mods.EasyBuildMod
