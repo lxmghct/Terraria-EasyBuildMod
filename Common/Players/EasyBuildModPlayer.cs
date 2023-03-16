@@ -61,6 +61,7 @@ namespace EasyBuildMod.Common.Players
         {
             UISystem.Init();
             UISystem.ItemPlaceHelperUI.Init();
+            UISystem.ItemDestroyHelperUI.Init();
         }
         
     }

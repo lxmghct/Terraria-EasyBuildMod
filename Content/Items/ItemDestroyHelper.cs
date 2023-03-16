@@ -6,6 +6,9 @@ namespace EasyBuildMod.Content.Items
     {
         public override string Texture => "EasyBuildMod/Content/Items/ItemDestroyHelper";
 
+        private int _maxPickPower;
+        private int _maxHammerPower;
+
         public override void AddRecipes()
         {
             // 20个铁锭/铅锭
@@ -15,9 +18,38 @@ namespace EasyBuildMod.Content.Items
                 .Register();
         }
 
+        private void updateMaxPower(Player player)
+        {
+            _maxPickPower = 0;
+            _maxHammerPower = 0;
+            for (int i = 0; i < player.inventory.Length; i++)
+            {
+                Item item = player.inventory[i];
+                if (item.IsAir)
+                {
+                    continue;
+                }
+                if (item.pick > _maxPickPower)
+                {
+                    _maxPickPower = item.pick;
+                }
+                if (item.hammer > _maxHammerPower)
+                {
+                    _maxHammerPower = item.hammer;
+                }
+            }
+        }
+
         protected override bool useItemCondition(Player player)
         {
-            return base.useItemCondition(player);
+            if (!UISystem.ItemDestroyHelperUI.EnableTileDestroy && !UISystem.ItemDestroyHelperUI.EnableWallDestroy)
+            {
+                return false;
+            }
+            updateMaxPower(player);
+            bool t1 = UISystem.ItemDestroyHelperUI.EnableTileDestroy && _maxPickPower > 0;
+            bool t2 = UISystem.ItemDestroyHelperUI.EnableWallDestroy && _maxHammerPower > 0;
+            return t1 || t2;
         }
 
         public override bool CanUseItem(Player player)
@@ -28,72 +60,29 @@ namespace EasyBuildMod.Content.Items
 
         protected override void StartAction(Player player)
         {
-            // var rect = GetRectangle(_beginPoint, _endPoint);
-            // int consumeCount = 0;
-            // int total = GetItemCountOfInventory(player.inventory, ContentItemType);
-            // Item item = new Item();
-            // item.SetDefaults(ContentItemType);
-            // // 从下到上，从左到右
-            // for (int y = rect.Y + rect.Height - 1; y >= rect.Y; y--)
-            // {
-            //     for (int x = rect.X; x < rect.X + rect.Width; x++)
-            //     {
-            //         if (consumeCount >= total)
-            //         {
-            //             break;
-            //         }
-            //         if (Main.tile[x, y].HasTile)
-            //         {
-            //             if (!player.TileReplacementEnabled)
-            //             {
-            //                 continue;
-            //             }
-            //             var tile = Main.tile[x, y];
-            //             if (!player.HasEnoughPickPowerToHurtTile(x, y))
-            //             {
-            //                 continue;
-            //             }
-            //             if (WorldGen.ReplaceTile(x, y, (ushort)item.createTile, item.placeStyle))
-            //             {
-            //                 consumeCount++;
-            //             }
-            //             // else // 无法替换，强行破坏后放置
-            //             // {
-            //             //     player.PickTile(x, y, 10000);
-            //             //     if (!Main.tile[x, y].HasTile && WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
-            //             //     {
-            //             //         consumeCount++;
-            //             //     }
-            //             // }
-            //         }
-            //         else
-            //         {
-            //             if (WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
-            //             {
-            //                 consumeCount++;
-            //             }
-            //         }
-            //     }
-            // }
-            // if (consumeCount > 0)
-            // {
-            //     for (int i = 0; i < player.inventory.Length; i++)
-            //     {
-            //         if (player.inventory[i].type == ContentItemType)
-            //         {
-            //             if (player.inventory[i].stack > consumeCount)
-            //             {
-            //                 player.inventory[i].stack -= consumeCount;
-            //                 break;
-            //             }
-            //             else
-            //             {
-            //                 consumeCount -= player.inventory[i].stack;
-            //                 player.inventory[i].SetDefaults();
-            //             }
-            //         }
-            //     }
-            // }
+            updateMaxPower(player);
+            bool t1 = UISystem.ItemDestroyHelperUI.EnableTileDestroy && _maxPickPower > 0;
+            bool t2 = UISystem.ItemDestroyHelperUI.EnableWallDestroy && _maxHammerPower > 0;
+            var rect = GetRectangle(_beginPoint, _endPoint);
+            // 从上到下，从左到右
+            for (int y = rect.Y; y < rect.Y + rect.Height; y++)
+            {
+                for (int x = rect.X; x < rect.X + rect.Width; x++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    if (t1 && tile.HasTile)
+                    {
+                        if (player.HasEnoughPickPowerToHurtTile(x, y))
+                        {
+                            WorldGen.KillTile(x, y, false, false, false);
+                        }
+                    }
+                    if (t2 && tile.WallType != 0)
+                    {
+                        WorldGen.KillWall(x, y, false);
+                    }
+                }
+            }
         }
                 
     }

@@ -6,7 +6,20 @@ namespace EasyBuildMod.Common.Systems
 {
     public class UISystem : ModSystem
     {
-        public static MenuUI CurrentMenuUI { get; set; }
+        private static MenuUI _currentMenuUI;
+        public static MenuUI CurrentMenuUI
+        {
+            get => _currentMenuUI;
+            set
+            {
+                if (_currentMenuUI != value)
+                {
+                    MenuUI oldMenuUI = _currentMenuUI;
+                    _currentMenuUI = value;
+                    oldMenuUI?.Close();
+                }
+            }
+        }
 
         public static ItemPlaceHelperUI ItemPlaceHelperUI { get; set; }
         private static UserInterface _itemPlaceHelperInterface;
