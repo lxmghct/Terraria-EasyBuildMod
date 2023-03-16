@@ -50,6 +50,8 @@ namespace EasyBuildMod.Content.Items
 
         public override bool AltFunctionUse(Player player) => true;
 
+        protected virtual bool useItemCondition(Player player) => true;
+
         public override bool CanUseItem(Player player)
         {
             UISystem.CurrentMenuUI = _menuUI;
@@ -69,7 +71,7 @@ namespace EasyBuildMod.Content.Items
                 }
                 return false;
             }
-            if (GetItemCountOfInventory(player.inventory, ContentItemType) == 0)
+            if (!useItemCondition(player))
             {
                 return false;
             }

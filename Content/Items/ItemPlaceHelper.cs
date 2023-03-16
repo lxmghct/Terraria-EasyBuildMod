@@ -15,6 +15,11 @@ namespace EasyBuildMod.Content.Items
                 .Register();
         }
 
+        protected override bool useItemCondition(Player player)
+        {
+            return GetItemCountOfInventory(player.inventory, ContentItemType) > 0;
+        }
+
         public override bool CanUseItem(Player player)
         {
             _menuUI = UISystem.ItemPlaceHelperUI;

@@ -5,6 +5,7 @@ Mods.EasyBuildMod: {
     ItemName: {
         ItemGrabMagnet: 物品拾取磁铁
         ItemPlaceHelper: 物品放置助手
+        ItemDestroyHelper: 物块摧毁助手
     }
     ItemTooltip: {
         ItemGrabMagnet: 

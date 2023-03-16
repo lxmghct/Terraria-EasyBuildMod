@@ -11,12 +11,18 @@ namespace EasyBuildMod.Common.Systems
         public static ItemPlaceHelperUI ItemPlaceHelperUI { get; set; }
         private static UserInterface _itemPlaceHelperInterface;
 
+        public static ItemDestroyHelperUI ItemDestroyHelperUI { get; set; }
+        private static UserInterface _itemDestroyHelperInterface;
+
 
         public static void Init()
         {
             ItemPlaceHelperUI = new ItemPlaceHelperUI();
             _itemPlaceHelperInterface = new UserInterface();
             _itemPlaceHelperInterface.SetState(ItemPlaceHelperUI);
+            ItemDestroyHelperUI = new ItemDestroyHelperUI();
+            _itemDestroyHelperInterface = new UserInterface();
+            _itemDestroyHelperInterface.SetState(ItemDestroyHelperUI);
         }
 
         public override void Load()
@@ -28,6 +34,8 @@ namespace EasyBuildMod.Common.Systems
         {
             ItemPlaceHelperUI = null;
             _itemPlaceHelperInterface = null;
+            ItemDestroyHelperUI = null;
+            _itemDestroyHelperInterface = null;
         }
 
         public override void UpdateUI(GameTime gameTime)
@@ -35,6 +43,10 @@ namespace EasyBuildMod.Common.Systems
             if (ItemPlaceHelperUI.Visible)
             {
                 _itemPlaceHelperInterface.Update(gameTime);
+            }
+            if (ItemDestroyHelperUI.Visible)
+            {
+                _itemDestroyHelperInterface.Update(gameTime);
             }
         }
 
@@ -50,6 +62,10 @@ namespace EasyBuildMod.Common.Systems
                         if (ItemPlaceHelperUI.Visible)
                         {
                             _itemPlaceHelperInterface.Draw(Main.spriteBatch, new GameTime());
+                        }
+                        if (ItemDestroyHelperUI.Visible)
+                        {
+                            _itemDestroyHelperInterface.Draw(Main.spriteBatch, new GameTime());
                         }
                         return true;
                     },

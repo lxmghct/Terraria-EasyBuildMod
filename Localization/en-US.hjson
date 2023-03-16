@@ -4,7 +4,8 @@ Mods.EasyBuildMod: {
     ModName: Easy Build
     ItemName: {
         ItemGrabMagnet: Item-Grab Magnet
-        ItemPlaceHelper: 物品放置助手
+        ItemPlaceHelper: Item-Place Helper
+        ItemDestroyHelper: Item-Destroy Helper
     }
     ItemTooltip: {
         ItemGrabMagnet: 
