@@ -2,7 +2,7 @@
 using Terraria.GameContent;
 using Terraria.UI.Chat;
 using EasyBuildMod.Common.Systems;
-using System.Collections.Generic;
+
 namespace EasyBuildMod.Content.UI
 {
     /// <summary>
@@ -34,11 +34,11 @@ namespace EasyBuildMod.Content.UI
         /// </summary>
         private void drawItemPreview()
         {
-            if (UISystem.ItemPlaceHelperUI is null || UISystem.ItemPlaceHelperUI.itemPlaceHelper is null)
+            if (UISystem.CurrentMenuUI is null || UISystem.CurrentMenuUI.AreaSelectItem is null)
             {
                 return;
             }
-            int itemId = UISystem.ItemPlaceHelperUI.itemPlaceHelper.PlaceItemType;
+            int itemId = UISystem.CurrentMenuUI.AreaSelectItem.ContentItemType;
             if (itemId == 0)
             {
                 return;

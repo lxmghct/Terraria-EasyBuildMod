@@ -6,6 +6,8 @@ namespace EasyBuildMod.Common.Systems
 {
     public class UISystem : ModSystem
     {
+        public static MenuUI CurrentMenuUI { get; set; }
+
         public static ItemPlaceHelperUI ItemPlaceHelperUI { get; set; }
         private static UserInterface _itemPlaceHelperInterface;
 
@@ -58,7 +60,7 @@ namespace EasyBuildMod.Common.Systems
 
         public static void Hide()
         {
-            ItemPlaceHelperUI?.Hide();
+            CurrentMenuUI?.Hide();
         }
     }
 }

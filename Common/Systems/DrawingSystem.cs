@@ -55,7 +55,7 @@ namespace EasyBuildMod.Common.Systems
 
         public static void StopDraw()
         {
-            _selectedAreaDrawing.StopDrawing();
+            _selectedAreaDrawing?.StopDrawing();
         }
 
         public static void Close()

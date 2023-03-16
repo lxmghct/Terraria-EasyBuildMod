@@ -32,13 +32,14 @@ namespace EasyBuildMod.Common.Players
 
         public override void PostUpdate()
         {
-            if (UISystem.ItemPlaceHelperUI.itemPlaceHelper is null)
+            if (UISystem.CurrentMenuUI is null || UISystem.CurrentMenuUI.AreaSelectItem is null)
             {
                 return;
             }
+            AreaSelectItem currentItem = UISystem.CurrentMenuUI.AreaSelectItem;
             Player player = Main.player[Main.myPlayer];
             Item item = player.inventory[player.selectedItem];
-            if (item.type != ModContent.ItemType<ItemPlaceHelper>())
+            if (item.type != currentItem.Type)
             {
                 if (!Main.playerInventory)
                 {
@@ -51,7 +52,7 @@ namespace EasyBuildMod.Common.Players
                 DrawingSystem.Init();
                 if (!Main.mouseLeft)
                 {
-                    UISystem.ItemPlaceHelperUI.itemPlaceHelper.HandleMouseUp();
+                    UISystem.CurrentMenuUI.AreaSelectItem.HandleMouseUp();
                 }
             }
         }
@@ -59,6 +60,7 @@ namespace EasyBuildMod.Common.Players
         public override void OnEnterWorld(Player player)
         {
             UISystem.Init();
+            UISystem.ItemPlaceHelperUI.Init();
         }
         
     }
