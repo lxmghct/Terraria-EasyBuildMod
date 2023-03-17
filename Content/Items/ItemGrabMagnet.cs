@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using Terraria.GameContent.Creative;
+using Terraria.Audio;
 
 namespace EasyBuildMod.Content.Items
 {
@@ -47,6 +48,14 @@ namespace EasyBuildMod.Content.Items
         {
             IsMagnetOn = !player.HasBuff(ModContent.BuffType<Buffs.ItemGrabBuff>());
             HandleMagnetStatusChange();
+            if (IsMagnetOn)
+            {
+                SoundEngine.PlaySound(SoundID.MenuTick);
+            }
+            else
+            {
+                SoundEngine.PlaySound(SoundID.MenuClose);
+            }
             return true;
         }
 

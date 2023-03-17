@@ -2,6 +2,7 @@ using EasyBuildMod.Common.Systems;
 using Terraria.GameContent.Creative;
 using System;
 using EasyBuildMod.Content.UI;
+using Terraria.Audio;
 
 
 namespace EasyBuildMod.Content.Items
@@ -63,10 +64,12 @@ namespace EasyBuildMod.Content.Items
             {
                 if (_menuUI.Visible)
                 {
+                    SoundEngine.PlaySound(SoundID.MenuClose);
                     _menuUI.Close();
                 }
                 else
                 {
+                    SoundEngine.PlaySound(SoundID.MenuTick);
                     _menuUI.Open(this);
                 }
                 return false;
@@ -115,6 +118,7 @@ namespace EasyBuildMod.Content.Items
             if (_startSelecting)
             {
                 StartAction(Main.LocalPlayer);
+                SoundEngine.PlaySound(SoundID.Dig);
                 StopUse();
             }
         }
