@@ -13,7 +13,6 @@ namespace EasyBuildMod.Content.Items
 
         public override string Texture => "EasyBuildMod/Content/Items/ItemGrabMagnet";
 
-        private Player currentPlayer;
         public bool IsMagnetOn;
 
         public override void SetStaticDefaults()
@@ -46,8 +45,7 @@ namespace EasyBuildMod.Content.Items
 
         public override bool? UseItem(Player player)
         {
-            currentPlayer = player;
-            IsMagnetOn = !currentPlayer.HasBuff(ModContent.BuffType<Buffs.ItemGrabBuff>());
+            IsMagnetOn = !player.HasBuff(ModContent.BuffType<Buffs.ItemGrabBuff>());
             HandleMagnetStatusChange();
             return true;
         }
@@ -62,19 +60,16 @@ namespace EasyBuildMod.Content.Items
 
         internal void HandleMagnetStatusChange()
         {
-            if (currentPlayer == null)
-            {
-                return;
-            }
+            Player player = Main.LocalPlayer;
             if (IsMagnetOn)
             {
-                CombatText.NewText(currentPlayer.Hitbox, Color.Green, GetText("OnTooltip"));
-                currentPlayer.AddBuff(ModContent.BuffType<Buffs.ItemGrabBuff>(), 2592000);
+                CombatText.NewText(player.Hitbox, Color.Green, GetText("OnTooltip"));
+                player.AddBuff(ModContent.BuffType<Buffs.ItemGrabBuff>(), 2592000);
             }
             else
             {
-                CombatText.NewText(currentPlayer.Hitbox, Color.Red, GetText("OffTooltip"));
-                currentPlayer.ClearBuff(ModContent.BuffType<Buffs.ItemGrabBuff>());
+                CombatText.NewText(player.Hitbox, Color.Red, GetText("OffTooltip"));
+                player.ClearBuff(ModContent.BuffType<Buffs.ItemGrabBuff>());
             }
         }
 
