@@ -29,6 +29,12 @@ Mods.EasyBuildMod: {
             Whether you can destroy blocks or walls depends on the maximum pickaxe power and maximum hammer power in your inventory.
             '''
     }
+    BuffName: {
+        ItemGrabBuff: Item-Grab Range
+    }
+    BuffTooltip: {
+        ItemGrabBuff: Increases the range of item-grab.
+    }
     Content: {
         Items: {
             ItemGrabMagnet: {
@@ -43,13 +49,6 @@ Mods.EasyBuildMod: {
                 DestroyWall: Destory Wall
                 On: On
                 Off: Off
-            }
-        }
-
-        Buffs: {
-            ItemGrabBuff: {
-                Name: Item Grab
-                Description: Increases the range of item-grab.
             }
         }
     }

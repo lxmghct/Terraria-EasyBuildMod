@@ -29,6 +29,15 @@ Mods.EasyBuildMod: {
             能否摧毁物块或墙壁取决于背包内的最大镐力和最大锤力。
             '''
     }
+    BuffName: {
+        ItemGrabBuff: 物品拾取
+    }
+    BuffTooltip: {
+        ItemGrabBuff: 
+            '''
+            物品拾取范围增加。
+            '''
+    }
     Content: {
         Items: {
             ItemGrabMagnet: {
@@ -43,12 +52,6 @@ Mods.EasyBuildMod: {
                 DestroyWall: 摧毁墙壁
                 On: 开启
                 Off: 关闭
-            }
-        }
-        Buffs: {
-            ItemGrabBuff: {
-                Name: 物品拾取
-                Description: 物品拾取范围增加。
             }
         }
     }
