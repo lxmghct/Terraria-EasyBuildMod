@@ -47,7 +47,7 @@ namespace EasyBuildMod.Content.Items
         public override bool? UseItem(Player player)
         {
             IsMagnetOn = !player.HasBuff(ModContent.BuffType<Buffs.ItemGrabBuff>());
-            HandleMagnetStatusChange();
+            HandleMagnetStatusChange(player);
             if (IsMagnetOn)
             {
                 SoundEngine.PlaySound(SoundID.MenuTick);
@@ -67,9 +67,8 @@ namespace EasyBuildMod.Content.Items
             tooltips.Add(line);
         }
 
-        internal void HandleMagnetStatusChange()
+        internal void HandleMagnetStatusChange(Player player)
         {
-            Player player = Main.LocalPlayer;
             if (IsMagnetOn)
             {
                 CombatText.NewText(player.Hitbox, Color.Green, GetText("OnTooltip"));
