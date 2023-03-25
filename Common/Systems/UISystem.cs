@@ -69,7 +69,7 @@ namespace EasyBuildMod.Common.Systems
             if (mouseTextIndex != -1)
             {
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
-                    "EasyBuildMod: ItemPlaceHelperUI",
+                    "EasyBuildMod: MyMenuUI",
                     delegate
                     {
                         if (ItemPlaceHelperUI.Visible)

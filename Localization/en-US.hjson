@@ -32,7 +32,7 @@ Mods.EasyBuildMod: {
     BuffName: {
         ItemGrabBuff: Item-Grab Range
     }
-    BuffTooltip: {
+    BuffDescription: {
         ItemGrabBuff: Increases the range of item-grab.
     }
     Content: {

@@ -29,7 +29,7 @@ namespace EasyBuildMod.Content.Items
         {
             // 研究需要的物品数量为1
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-            Item.staff[Type] = true;
+            Item.staff[Type] = true; // 使其useStyle为Shoot时有不同于枪械的动画
         }
 
         public override void SetDefaults()
@@ -41,7 +41,7 @@ namespace EasyBuildMod.Content.Items
             Item.rare = ItemRarityID.Blue;
             Item.useAnimation = 15;
             Item.useTime = 20;
-            Item.useStyle = ItemUseStyleID.HoldUp;
+            Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
             Item.channel = true;
             Item.consumable = false;

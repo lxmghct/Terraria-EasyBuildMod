@@ -1,5 +1,4 @@
 using EasyBuildMod.Content.Items;
-using EasyBuildMod.Common.Systems;
 
 namespace EasyBuildMod.Content.UI
 {

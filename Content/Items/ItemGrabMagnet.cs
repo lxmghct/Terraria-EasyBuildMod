@@ -47,13 +47,16 @@ namespace EasyBuildMod.Content.Items
         public override bool? UseItem(Player player)
         {
             IsMagnetOn = !player.HasBuff(ModContent.BuffType<Buffs.ItemGrabBuff>());
-            HandleMagnetStatusChange(player);
             if (IsMagnetOn)
             {
+                CombatText.NewText(player.Hitbox, Color.Green, GetText("OnTooltip"));
+                player.AddBuff(ModContent.BuffType<Buffs.ItemGrabBuff>(), 2592000);
                 SoundEngine.PlaySound(SoundID.MenuTick);
             }
             else
             {
+                CombatText.NewText(player.Hitbox, Color.Red, GetText("OffTooltip"));
+                player.ClearBuff(ModContent.BuffType<Buffs.ItemGrabBuff>());
                 SoundEngine.PlaySound(SoundID.MenuClose);
             }
             return true;
@@ -67,19 +70,6 @@ namespace EasyBuildMod.Content.Items
             tooltips.Add(line);
         }
 
-        internal void HandleMagnetStatusChange(Player player)
-        {
-            if (IsMagnetOn)
-            {
-                CombatText.NewText(player.Hitbox, Color.Green, GetText("OnTooltip"));
-                player.AddBuff(ModContent.BuffType<Buffs.ItemGrabBuff>(), 2592000);
-            }
-            else
-            {
-                CombatText.NewText(player.Hitbox, Color.Red, GetText("OffTooltip"));
-                player.ClearBuff(ModContent.BuffType<Buffs.ItemGrabBuff>());
-            }
-        }
-
     }
 }
+
