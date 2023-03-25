@@ -1,5 +1,6 @@
 
 using EasyBuildMod.Common.Systems;
+
 namespace EasyBuildMod.Content.Items
 {
     public class ItemDestroyHelper : AreaSelectItem
@@ -64,6 +65,7 @@ namespace EasyBuildMod.Content.Items
             bool t1 = UISystem.ItemDestroyHelperUI.EnableTileDestroy && _maxPickPower > 0;
             bool t2 = UISystem.ItemDestroyHelperUI.EnableWallDestroy && _maxHammerPower > 0;
             var rect = GetRectangle(_beginPoint, _endPoint);
+            bool isMultiplayer = Main.netMode == NetmodeID.MultiplayerClient;
             // 从上到下，从左到右
             for (int y = rect.Y; y < rect.Y + rect.Height; y++)
             {
@@ -75,14 +77,27 @@ namespace EasyBuildMod.Content.Items
                         if (player.HasEnoughPickPowerToHurtTile(x, y))
                         {
                             WorldGen.KillTile(x, y, false, false, false);
+                            if (isMultiplayer)
+                            {
+                                NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, (float)x, (float)y, 0f, 0, 0, 0);
+                            }
+                            // player.PickTile(x, y, 100000);
                         }
                     }
                     if (t2 && tile.WallType != 0)
                     {
                         WorldGen.KillWall(x, y, false);
+                        if (isMultiplayer)
+                        {
+                            NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 2, (float)x, (float)y, 0f, 0, 0, 0);
+                        }
                     }
                 }
             }
+            // if (Main.netMode == NetmodeID.MultiplayerClient)
+            // {
+            //     NetMessage.SendData(MessageID.TileSquare, Main.myPlayer, -1, null, rect.X, rect.Y, rect.Width, rect.Height);
+            // }
         }
                 
     }

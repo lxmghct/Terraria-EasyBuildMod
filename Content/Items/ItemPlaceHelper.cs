@@ -54,6 +54,8 @@ namespace EasyBuildMod.Content.Items
             bool isWall = item.createWall > 0;
             bool hasHammer = getMaxHammerPower(player) > 0;
             // 从下到上，从左到右
+            // 这种顺序可以保证某些具有自由落体性质的方块(如沙块)能够被正确的放置
+            // 不过也会导致替换方块时, 像沙块这样的方块无法被从下往上替换
             for (int y = rect.Y + rect.Height - 1; y >= rect.Y; y--)
             {
                 for (int x = rect.X; x < rect.X + rect.Width; x++)
@@ -88,33 +90,25 @@ namespace EasyBuildMod.Content.Items
                     {
                         if (tile.HasTile)
                         {
-                            if (!player.TileReplacementEnabled)
+                            if (!player.TileReplacementEnabled || !player.HasEnoughPickPowerToHurtTile(x, y))
                             {
                                 continue;
                             }
-                            if (!player.HasEnoughPickPowerToHurtTile(x, y))
+                            // 判断是否是同一种方块，是则跳过
+                            WorldGen.KillTile_GetItemDrops(x, y, tile, out int tileType, out _, out _, out _);
+                            if (tileType == item.type)
                             {
                                 continue;
                             }
-                            if (WorldGen.ReplaceTile(x, y, (ushort)item.createTile, item.placeStyle))
-                            {
-                                consumeCount++;
-                            }
-                            // else // 无法替换，强行破坏后放置
+                            // if (WorldGen.ReplaceTile(x, y, (ushort)item.createTile, item.placeStyle))
                             // {
-                            //     player.PickTile(x, y, 10000);
-                            //     if (!Main.tile[x, y].HasTile && WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
-                            //     {
-                            //         consumeCount++;
-                            //     }
+                            //     consumeCount++;
                             // }
+                            player.PickTile(x, y, 100000);
                         }
-                        else
+                        if (WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
                         {
-                            if (WorldGen.PlaceTile(x, y, (ushort)item.createTile, true, true, player.whoAmI, item.placeStyle))
-                            {
-                                consumeCount++;
-                            }
+                            consumeCount++;
                         }
                     }
                 }
@@ -137,6 +131,10 @@ namespace EasyBuildMod.Content.Items
                         }
                     }
                 }
+            }
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                NetMessage.SendData(MessageID.TileSquare, Main.myPlayer, -1, null, rect.X, rect.Y, rect.Width, rect.Height);
             }
         }
                 
