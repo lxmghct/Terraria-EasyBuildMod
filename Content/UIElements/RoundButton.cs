@@ -1,6 +1,7 @@
 using ReLogic.Content;
 using Terraria.GameContent;
 using Terraria.UI.Chat;
+using EasyBuildMod.Common.Systems;
 namespace EasyBuildMod.Content.UIElements
 {
     public class RoundButton : UIElement
@@ -65,6 +66,7 @@ namespace EasyBuildMod.Content.UIElements
             {
                 Background = _backgroundHighlight;
             }
+            UISystem.UsingUI = true;
         }
 
         public override void MouseOut(UIMouseEvent evt)
@@ -75,6 +77,7 @@ namespace EasyBuildMod.Content.UIElements
             {
                 Background = _backgroundNormal;
             }
+            UISystem.UsingUI = false;
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

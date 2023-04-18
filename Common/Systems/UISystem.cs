@@ -27,6 +27,8 @@ namespace EasyBuildMod.Common.Systems
         public static ItemDestroyHelperUI ItemDestroyHelperUI { get; set; }
         private static UserInterface _itemDestroyHelperInterface;
 
+        // 用于判断是否正在使用UI, 防止使用UI时不小心使用其他物品。
+        public static bool UsingUI;
 
         public static void Init()
         {
@@ -36,6 +38,7 @@ namespace EasyBuildMod.Common.Systems
             ItemDestroyHelperUI = new ItemDestroyHelperUI();
             _itemDestroyHelperInterface = new UserInterface();
             _itemDestroyHelperInterface.SetState(ItemDestroyHelperUI);
+            UsingUI = false;
         }
 
         public override void Load()
@@ -49,6 +52,7 @@ namespace EasyBuildMod.Common.Systems
             _itemPlaceHelperInterface = null;
             ItemDestroyHelperUI = null;
             _itemDestroyHelperInterface = null;
+            UsingUI = false;
         }
 
         public override void UpdateUI(GameTime gameTime)
@@ -60,6 +64,10 @@ namespace EasyBuildMod.Common.Systems
             if (ItemDestroyHelperUI.Visible)
             {
                 _itemDestroyHelperInterface.Update(gameTime);
+            }
+            if (!ItemPlaceHelperUI.Visible && ItemDestroyHelperUI.Visible)
+            {
+                UsingUI = false;
             }
         }
 

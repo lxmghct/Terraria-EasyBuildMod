@@ -63,6 +63,19 @@ namespace EasyBuildMod.Common.Players
             UISystem.ItemPlaceHelperUI.Init();
             UISystem.ItemDestroyHelperUI.Init();
         }
+
+        // 重写CanUseItem方法，防止使用UI时不小心使用其他物品。
+        public override bool CanUseItem(Item item)
+        {
+            if (!UISystem.UsingUI)
+            {
+                return true;
+            }
+            if (item.type == ModContent.ItemType<ItemPlaceHelper>() || item.type == ModContent.ItemType<ItemDestroyHelper>()) {
+                return true;
+            }
+            return false;
+        }
         
     }
 
