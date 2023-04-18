@@ -1,5 +1,6 @@
 
 using EasyBuildMod.Common.Systems;
+using EasyBuildMod.Common.Utils;
 
 namespace EasyBuildMod.Content.Items
 {
@@ -43,14 +44,14 @@ namespace EasyBuildMod.Content.Items
 
         protected override bool useItemCondition(Player player)
         {
-            if (!UISystem.ItemDestroyHelperUI.EnableTileDestroy && !UISystem.ItemDestroyHelperUI.EnableWallDestroy)
+            if (!UISystem.ItemDestroyHelperUI.EnableTileDestroy && !UISystem.ItemDestroyHelperUI.EnableWallDestroy && !UISystem.ItemDestroyHelperUI.EnableLiquidDestroy)
             {
                 return false;
             }
             updateMaxPower(player);
             bool t1 = UISystem.ItemDestroyHelperUI.EnableTileDestroy && _maxPickPower > 0;
             bool t2 = UISystem.ItemDestroyHelperUI.EnableWallDestroy && _maxHammerPower > 0;
-            return t1 || t2;
+            return t1 || t2 || UISystem.ItemDestroyHelperUI.EnableLiquidDestroy;
         }
 
         public override bool CanUseItem(Player player)
@@ -64,6 +65,7 @@ namespace EasyBuildMod.Content.Items
             updateMaxPower(player);
             bool t1 = UISystem.ItemDestroyHelperUI.EnableTileDestroy && _maxPickPower > 0;
             bool t2 = UISystem.ItemDestroyHelperUI.EnableWallDestroy && _maxHammerPower > 0;
+            bool t3 = UISystem.ItemDestroyHelperUI.EnableLiquidDestroy;
             var rect = GetRectangle(_beginPoint, _endPoint);
             bool isMultiplayer = Main.netMode == NetmodeID.MultiplayerClient;
             // 从上到下，从左到右
@@ -91,6 +93,10 @@ namespace EasyBuildMod.Content.Items
                         {
                             NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 2, (float)x, (float)y, 0f, 0, 0, 0);
                         }
+                    }
+                    if (t3 && tile.LiquidAmount > 0)
+                    {
+                        LiquidUtils.clearLiquid(x, y);
                     }
                 }
             }

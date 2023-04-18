@@ -12,16 +12,18 @@ namespace EasyBuildMod.Content.UI
         }
         protected RoundButton TileDestroyButton;
         protected RoundButton WallDestroyButton;
+        protected RoundButton LiquidDestroyButton;
 
         public bool EnableTileDestroy;
         public bool EnableWallDestroy;
+        public bool EnableLiquidDestroy;
 
         public override void OnInitialize()
         {
             base.OnInitialize();
 
             TileDestroyButton = new RoundButton();
-            TileDestroyButton.Left.Set(50, 0);
+            TileDestroyButton.Left.Set(20, 0);
             TileDestroyButton.Top.Set(40, 0);
             MainContainer.Append(TileDestroyButton);
             TileDestroyButton.SetContent(ModContent.Request<Texture2D>("EasyBuildMod/Assets/images/pickaxe"));
@@ -29,12 +31,20 @@ namespace EasyBuildMod.Content.UI
             TileDestroyButton.SetHoverText(GetText("DestroyTile") + ":" + GetText("Off"));
 
             WallDestroyButton = new RoundButton();
-            WallDestroyButton.Left.Set(110, 0);
+            WallDestroyButton.Left.Set(80, 0);
             WallDestroyButton.Top.Set(40, 0);
             MainContainer.Append(WallDestroyButton);
             WallDestroyButton.SetContent(ModContent.Request<Texture2D>("EasyBuildMod/Assets/images/hammer"));
             EnableWallDestroy = false;
             WallDestroyButton.SetHoverText(GetText("DestroyWall") + ":" + GetText("Off"));
+
+            LiquidDestroyButton = new RoundButton();
+            LiquidDestroyButton.Left.Set(140, 0);
+            LiquidDestroyButton.Top.Set(40, 0);
+            MainContainer.Append(LiquidDestroyButton);
+            LiquidDestroyButton.SetContent(ModContent.Request<Texture2D>("EasyBuildMod/Assets/images/bucket"));
+            EnableLiquidDestroy = false;
+            LiquidDestroyButton.SetHoverText(GetText("DestroyLiquid") + ":" + GetText("Off"));
 
             TileDestroyButton.OnClick += (evt, element) =>
             {
@@ -48,6 +58,13 @@ namespace EasyBuildMod.Content.UI
                 EnableWallDestroy = !EnableWallDestroy;
                 WallDestroyButton.SetChosen(EnableWallDestroy);
                 WallDestroyButton.SetHoverText(GetText("DestroyWall") + ":" + (EnableWallDestroy ? GetText("On") : GetText("Off")));
+            };
+
+            LiquidDestroyButton.OnClick += (evt, element) =>
+            {
+                EnableLiquidDestroy = !EnableLiquidDestroy;
+                LiquidDestroyButton.SetChosen(EnableLiquidDestroy);
+                LiquidDestroyButton.SetHoverText(GetText("DestroyLiquid") + ":" + (EnableLiquidDestroy ? GetText("On") : GetText("Off")));
             };
         }
 

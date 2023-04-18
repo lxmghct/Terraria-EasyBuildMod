@@ -1,5 +1,6 @@
 
 using EasyBuildMod.Common.Systems;
+using EasyBuildMod.Common.Utils;
 namespace EasyBuildMod.Content.Items
 {
     public class ItemPlaceHelper : AreaSelectItem
@@ -44,7 +45,7 @@ namespace EasyBuildMod.Content.Items
             return maxHammerPower;
         }
 
-        protected override void StartAction(Player player)
+        private void placeTiles(Player player)
         {
             var rect = GetRectangle(_beginPoint, _endPoint);
             int consumeCount = 0;
@@ -135,6 +136,44 @@ namespace EasyBuildMod.Content.Items
             if (Main.netMode == NetmodeID.MultiplayerClient)
             {
                 NetMessage.SendData(MessageID.TileSquare, Main.myPlayer, -1, null, rect.X, rect.Y, rect.Width, rect.Height);
+            }
+        }
+
+        private void placeLiquid(Player player, int liquidId)
+        {
+            bool hasLiquidBucket = false;
+            for (int i = 0; i < player.inventory.Length; i++)
+            {
+                if (player.inventory[i].type == ContentItemType)
+                {
+                    hasLiquidBucket = true;
+                    break;
+                }
+            }
+            if (!hasLiquidBucket)
+            {
+                return;
+            }
+            var rect = GetRectangle(_beginPoint, _endPoint);
+            for (int y = rect.Y + rect.Height - 1; y >= rect.Y; y--)
+            {
+                for (int x = rect.X; x < rect.X + rect.Width; x++)
+                {
+                    LiquidUtils.placeLiquid(x, y, liquidId);
+                }
+            }
+        }
+
+        protected override void StartAction(Player player)
+        {
+            int liquidId = LiquidUtils.getLiquidType(ContentItemType);
+            if (liquidId == -1)
+            {
+                placeTiles(player);
+            }
+            else
+            {
+                placeLiquid(player, liquidId);
             }
         }
                 

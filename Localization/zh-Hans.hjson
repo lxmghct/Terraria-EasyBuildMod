@@ -50,6 +50,7 @@ Mods.EasyBuildMod: {
             ItemDestroyHelper: {
                 DestroyTile: 摧毁物块
                 DestroyWall: 摧毁墙壁
+                DestroyLiquid: 摧毁液体
                 On: 开启
                 Off: 关闭
             }

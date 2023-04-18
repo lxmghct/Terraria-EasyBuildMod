@@ -47,6 +47,7 @@ Mods.EasyBuildMod: {
             ItemDestroyHelper: {
                 DestroyTile: Destory Tile
                 DestroyWall: Destory Wall
+                DestroyLiquid: Destory Liquid
                 On: On
                 Off: Off
             }
